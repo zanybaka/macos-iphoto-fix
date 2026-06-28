@@ -1,8 +1,12 @@
 # macos-iphoto-fix
 
+[![CI](https://github.com/zanybaka/macos-iphoto-fix/actions/workflows/ci.yml/badge.svg)](https://github.com/zanybaka/macos-iphoto-fix/actions/workflows/ci.yml)
+
 Make Apple **iPhoto** (and **Aperture**) launch again on modern macOS — including
 the frustrating case where you already ran **Retroactive** once, it worked, and
 then a macOS upgrade silently broke the app again.
+
+![fix-iphoto-sequoia.sh --help](docs/help.svg)
 
 > Typical symptom on Sonoma / Sequoia:
 >

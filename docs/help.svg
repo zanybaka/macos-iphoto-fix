@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="707" height="422" viewBox="0 0 707 422" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13">
+<rect x="0" y="0" width="707" height="422" rx="10" fill="#0d1117"/>
+<rect x="0" y="0" width="707" height="34" rx="10" fill="#161b22"/>
+<rect x="0" y="24" width="707" height="10" fill="#161b22"/>
+<circle cx="18" cy="17" r="6" fill="#ff5f56"/>
+<circle cx="38" cy="17" r="6" fill="#ffbd2e"/>
+<circle cx="58" cy="17" r="6" fill="#27c93f"/>
+<text x="353.5" y="22" fill="#8b949e" text-anchor="middle" font-size="12">fix-iphoto-sequoia.sh — help</text>
+<text x="18" y="56" xml:space="preserve"><tspan fill="#7ee787">$ </tspan><tspan fill="#e6edf3">./fix-iphoto-sequoia.sh --help</tspan></text>
+<text x="18" y="75" xml:space="preserve" fill="#c9d1d9"></text>
+<text x="18" y="94" xml:space="preserve" fill="#79c0ff">Usage: fix-iphoto-sequoia.sh [options]</text>
+<text x="18" y="113" xml:space="preserve" fill="#c9d1d9"></text>
+<text x="18" y="132" xml:space="preserve" fill="#c9d1d9">  --app PATH           Path to iPhoto.app / Aperture.app</text>
+<text x="18" y="151" xml:space="preserve" fill="#c9d1d9">                       (default: auto-detect in common locations)</text>
+<text x="18" y="170" xml:space="preserve" fill="#c9d1d9">  --retroactive PATH   Path to a downloaded Retroactive.app, used as the source</text>
+<text x="18" y="189" xml:space="preserve" fill="#c9d1d9">                       of an up-to-date ApertureFixer (and assets for --full).</text>
+<text x="18" y="208" xml:space="preserve" fill="#c9d1d9">  --diagnose           Analyze only; make no changes. (Default when no action.)</text>
+<text x="18" y="227" xml:space="preserve" fill="#c9d1d9">  --fix                Apply the fix (top-up for already-patched apps).</text>
+<text x="18" y="246" xml:space="preserve" fill="#c9d1d9">  --full               Experimental: also patch a PRISTINE app (needs --retroactive).</text>
+<text x="18" y="265" xml:space="preserve" fill="#c9d1d9">  --launch             Launch the app afterwards and report whether it stays up.</text>
+<text x="18" y="284" xml:space="preserve" fill="#c9d1d9">  --yes                Don&#x27;t prompt for confirmation.</text>
+<text x="18" y="303" xml:space="preserve" fill="#c9d1d9">  -h, --help           Show this help.</text>
+<text x="18" y="322" xml:space="preserve" fill="#c9d1d9"></text>
+<text x="18" y="341" xml:space="preserve" fill="#79c0ff">Examples:</text>
+<text x="18" y="360" xml:space="preserve" fill="#c9d1d9">  ./fix-iphoto-sequoia.sh --app &quot;/Applications/iPhoto.app&quot;</text>
+<text x="18" y="379" xml:space="preserve" fill="#c9d1d9">  ./fix-iphoto-sequoia.sh --app &quot;/Applications/iPhoto.app&quot; \</text>
+<text x="18" y="398" xml:space="preserve" fill="#c9d1d9">      --fix --retroactive /Applications/Retroactive.app --launch</text>
+</svg>

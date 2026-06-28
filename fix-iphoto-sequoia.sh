@@ -32,6 +32,8 @@
 #
 # License: MIT.
 
+# shellcheck disable=SC2012  # `ls -t | head` is the concise "newest file by mtime" idiom here
+# shellcheck disable=SC2016  # single-quoted strings are literal grep/sed regex, by design
 set -euo pipefail
 
 # ----------------------------------------------------------------------------- ui
@@ -190,7 +192,7 @@ UNSAT="$(cat "$TMP/unsat.txt")"
 if [ -z "$MISSING" ]; then
   ok "No AppKit class symbols need stubbing for the scanned binaries."
 else
-  log "Shim must provide (a rebuild includes all of these): $(echo $MISSING)"
+  log "Shim must provide (a rebuild includes all of these): $(printf '%s' "$MISSING" | tr '\n' ' ')"
   if [ "$PATCHED" = 1 ] && [ -z "$UNSAT" ]; then
     ok "Current shim already provides all of them — looks correct for macOS $OSVER."
   else
@@ -217,7 +219,7 @@ fi
 confirm() { [ "$ASSUME_YES" = 1 ] && return 0; printf 'Proceed with modifying "%s"? [y/N] ' "$APP"; read -r a; [ "$a" = y ] || [ "$a" = Y ]; }
 
 backup_app() {
-  local dst="${APP%.app}.backup-$(date +%Y%m%d-%H%M%S).app"
+  local dst; dst="${APP%.app}.backup-$(date +%Y%m%d-%H%M%S).app"
   log "Backing up -> $dst"
   if /bin/cp -c -R "$APP" "$dst" 2>/dev/null; then ok "backup (APFS clone)"; else ditto "$APP" "$dst"; ok "backup (copy)"; fi
 }
@@ -274,7 +276,7 @@ do_topup() {
   if [ -z "$MISSING" ]; then
     log "No missing AppKit symbols; leaving shim unchanged."
   else
-    log "Rebuilding AppKit shim with stubs: $(echo $MISSING)"
+    log "Rebuilding AppKit shim with stubs: $(printf '%s' "$MISSING" | tr '\n' ' ')"
     build_shim "$MISSING" "$TMP/AppKit.shim"
     cp "$TMP/AppKit.shim" "$SHIM"; chmod 755 "$SHIM"; xattr -c "$SHIM" 2>/dev/null || true
     adhoc_sign "$SHIM"
