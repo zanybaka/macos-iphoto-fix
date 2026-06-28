@@ -1,0 +1,23 @@
+# build artifacts
+*.o
+a.out
+build/
+*.dSYM/
+
+# compiled probes (keep the .m sources)
+tools/symcheck
+tools/probe
+tools/locate
+
+# compiled shim dylibs and extracted Apple/Retroactive binaries — never commit.
+# (Patterns end with _ or / so they don't catch source files like
+#  src/appkit_shim.example.m; note core.ignorecase is on by default on macOS.)
+AppKit_shim_*
+ApertureFixer_*
+ProKit.framework.zip
+*.app/
+*.framework/
+*.dylib
+
+# macOS cruft
+.DS_Store
