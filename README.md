@@ -6,7 +6,7 @@ Make Apple **iPhoto** (and **Aperture**) launch again on modern macOS — includ
 the frustrating case where you already ran **Retroactive** once, it worked, and
 then a macOS upgrade silently broke the app again.
 
-![fix-iphoto-sequoia.sh --help](docs/help.svg)
+![Demo: diagnose → fix → diagnose on a broken iPhoto](docs/demo.svg)
 
 > Typical symptom on Sonoma / Sequoia:
 >
@@ -81,6 +81,8 @@ differ per-arch). The script uses exactly this test.
 
 ## Quick start
 
+![fix-iphoto-sequoia.sh --help](docs/help.svg)
+
 ```bash
 git clone https://github.com/zanybaka/macos-iphoto-fix.git
 cd macos-iphoto-fix
@@ -115,6 +117,46 @@ For a **pristine** (never-patched) app, run Retroactive first, then re-run with
 - Apple's dead online services (Photo Stream, photo-book ordering, MobileMe).
 - Anything depending on frameworks Apple fully removed for your arch.
   Your photos/library load fine; some features won't.
+
+## Troubleshooting
+
+**“`fix-iphoto-sequoia.sh` cannot be opened” / Gatekeeper blocks the app.**
+The patched app is ad-hoc signed, not notarized. Launch it once via Finder →
+right-click → **Open**, or clear the quarantine flag:
+`xattr -dr com.apple.quarantine "/Applications/iPhoto.app"`.
+
+**It exits immediately with no crash report.**
+Usually Gatekeeper (see above), not a code failure. Confirm there's no new
+`~/Library/Logs/DiagnosticReports/iPhoto-*.ips`; if there isn't, it's a launch
+policy block, not a crash.
+
+**A *new* `Symbol not found: _OBJC_CLASS_$_<X>` after a later macOS update.**
+Expected — a newer OS dropped another private symbol. Just re-run
+`./fix-iphoto-sequoia.sh --app … --fix --retroactive …`: the script re-detects
+the now-missing classes and rebuilds the shim to cover them.
+
+**“`warn` … NOT yet provided … : `<Foo>`” persists after `--fix`.**
+The class is bound to a framework *other* than AppKit (the shim only serves the
+AppKit namespace). Open an issue with the class name and the crash report; that
+needs a separate shim.
+
+**Crash right after launch in `NSSegmentedControl…updateSegmentItemConfiguration:`.**
+Your `ApertureFixer` predates this OS. Pass `--retroactive /path/to/Retroactive.app`
+so the script refreshes it; the latest Retroactive carries the Sequoia fix.
+
+**`missing tool: clang/nm/codesign`.**
+Install the Xcode Command Line Tools: `xcode-select --install`.
+
+**`Rosetta 2 not detected` on Apple Silicon.**
+`softwareupdate --install-rosetta --agree-to-license`.
+
+**“library in use” / two iPhoto windows.**
+Another iPhoto instance (or the original copy) is holding the library. Quit all
+iPhoto instances and relaunch the patched one.
+
+**Pristine app: diagnosis says it can't be topped up.**
+Correct — the shim needs ProKit redirected first. Run Retroactive once, then
+re-run this tool with `--fix`, or try the experimental `--full --retroactive …`.
 
 ## Credits
 
