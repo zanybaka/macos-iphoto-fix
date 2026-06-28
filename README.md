@@ -119,7 +119,16 @@ The hard part — the runtime fixer and the original revival approach — is
 This project is a thin, transparent **top-up** for when a macOS upgrade outpaces
 an existing patch. Please support Retroactive.
 
-## License
+## Legal
 
-MIT — see [LICENSE](LICENSE). Not affiliated with Apple. "iPhoto", "Aperture",
-and "AppKit" are trademarks of Apple Inc.
+- This project is MIT-licensed (see [LICENSE](LICENSE)) and covers **only its own
+  code** — the AppKit shim source, scripts, and tools.
+- **Retroactive has no published license** (no LICENSE file; all rights reserved).
+  This project does **not** include, redistribute, or modify any Retroactive code
+  or binaries. The script reads `ApertureFixer` from **your own** downloaded copy
+  of Retroactive, on your machine, and writes only into **your own** app bundle.
+- No Apple code or binaries are included or redistributed. Apple, iPhoto, Aperture,
+  and AppKit are trademarks of Apple Inc.; this project is not affiliated with Apple.
+  It is intended for personal interoperability use with software you already own.
+- Please support the original project:
+  <https://github.com/cormiertyshawn895/Retroactive>
