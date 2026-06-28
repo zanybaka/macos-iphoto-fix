@@ -101,7 +101,7 @@ if [ -z "$APP" ]; then
     [ -d "$c" ] && { APP="$c"; break; }
   done
 fi
-[ -n "$APP" ] && [ -d "$APP" ] || die "app not found; pass --app /path/to/iPhoto.app"
+if [ -z "$APP" ] || [ ! -d "$APP" ]; then die "app not found; pass --app /path/to/iPhoto.app"; fi
 APP="${APP%/}"
 MAIN_BIN="$APP/Contents/MacOS/$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$APP/Contents/Info.plist" 2>/dev/null || basename "$APP" .app)"
 [ -f "$MAIN_BIN" ] || MAIN_BIN="$(ls "$APP"/Contents/MacOS/* 2>/dev/null | head -1)"
@@ -164,7 +164,7 @@ missing_for() {  # $1 = library alternation, e.g. 'AppKit'
   local classes="$TMP/c.$$.txt"
   grep -E "\(from ($1)\)" "$RAW" 2>/dev/null \
     | sed -E 's/.*_OBJC_CLASS_\$_([A-Za-z0-9_]+).*/\1/' | sort -u > "$classes" || true
-  [ -s "$classes" ] && "$SYMCHECK" < "$classes" | sort -u || true
+  if [ -s "$classes" ]; then "$SYMCHECK" < "$classes" | sort -u; fi
 }
 
 # ----------------------------------------------------------------- detect state
@@ -174,8 +174,11 @@ PATCHED=0; [ -f "$SHIM" ] && PATCHED=1
 FIXER="$APP/Contents/Frameworks/ApertureFixer.framework/Versions/A/ApertureFixer"
 
 # classes the CURRENT bundle shim already exports
-shim_exports() { [ -f "$SHIM" ] && nm -arch "$ARCH" "$SHIM" 2>/dev/null \
-  | sed -nE 's/.* _OBJC_CLASS_\$_([A-Za-z0-9_]+)$/\1/p' | sort -u || true; }
+shim_exports() {
+  [ -f "$SHIM" ] || return 0
+  nm -arch "$ARCH" "$SHIM" 2>/dev/null \
+    | sed -nE 's/.* _OBJC_CLASS_\$_([A-Za-z0-9_]+)$/\1/p' | sort -u
+}
 
 # ----------------------------------------------------------------- diagnose
 log "Patch state: $([ "$PATCHED" = 1 ] && echo 'Retroactive-patched (bundled AppKit shim present)' || echo 'pristine (no bundled AppKit shim)')"
@@ -334,7 +337,7 @@ else
   exit 2
 fi
 
-[ "$PATCHED" = 1 ] && verify_shim || true
+if [ "$PATCHED" = 1 ]; then verify_shim || true; fi
 
 # ------------------------------------------------------------------ optional launch
 if [ "$DO_LAUNCH" = 1 ]; then

@@ -15,7 +15,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: ShellCheck (fixer script)
-        run: shellcheck fix-iphoto-sequoia.sh
+        # gate at warning so advisory info/style findings can't break the build
+        # across shellcheck versions; the script is also clean at default severity.
+        run: shellcheck --severity=warning fix-iphoto-sequoia.sh
 
       - name: Bash syntax check
         run: bash -n fix-iphoto-sequoia.sh
