@@ -14,6 +14,13 @@ on:
 permissions:
   contents: read
 
+# Отмена только для PR (vps_2026 CI-009). В PR пуши до последнего устарели по определению.
+# В push в main отмена оставила бы коммит в истории непроверенным навсегда, и выглядело бы это
+# как обычная отмена. Не заменять литералом true - форма канонична для всех репозиториев.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   shellcheck:
     name: shellcheck + syntax
