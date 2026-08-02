@@ -1,8 +1,15 @@
 name: CI
 
+# Триггеры - канон CI (реестр профилей репозиториев в vps_2026): push в main +
+# pull_request + workflow_dispatch. Раньше стоял голый `push:` без фильтра веток:
+# каждый PR из ветки этого же репозитория гонялся ДВАЖДЫ (на push ветки и на сам
+# PR). Минуты публичного репо бесплатны, но два одинаковых прогона на PR - шум в
+# check-runs, по которым судит verify-гейт волны (AI-012).
 on:
   push:
+    branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
