@@ -1,10 +1,10 @@
 name: CI
 
-# Триггеры - канон CI (реестр профилей репозиториев в vps_2026): push в main +
+# Триггеры - канон CI: push в main +
 # pull_request + workflow_dispatch. Раньше стоял голый `push:` без фильтра веток:
 # каждый PR из ветки этого же репозитория гонялся ДВАЖДЫ (на push ветки и на сам
 # PR). Минуты публичного репо бесплатны, но два одинаковых прогона на PR - шум в
-# check-runs, по которым судит verify-гейт волны (AI-012).
+# check-runs, по которым судит verify-гейт волны.
 on:
   push:
     branches: [main]
@@ -14,7 +14,7 @@ on:
 permissions:
   contents: read
 
-# Отмена только для PR (vps_2026 CI-009). В PR пуши до последнего устарели по определению.
+# Отмена только для PR. В PR пуши до последнего устарели по определению.
 # В push в main отмена оставила бы коммит в истории непроверенным навсегда, и выглядело бы это
 # как обычная отмена. Не заменять литералом true - форма канонична для всех репозиториев.
 concurrency:
@@ -26,7 +26,7 @@ jobs:
     name: shellcheck + syntax
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
       - name: ShellCheck (fixer script)
         # gate at warning so advisory info/style findings can't break the build
