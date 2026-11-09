@@ -21,3 +21,4 @@ ProKit.framework.zip
 
 # macOS cruft
 .DS_Store
+/AGENTS.md
